@@ -7,8 +7,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class Client2Server extends AppActivity{
     //客户端与服务器通信类
-    public static String verify_url = "https://api.forgiveher.cn/verify.php";  //验证短信的服务端地址
-    //private static String verify_url = "http://baidu.com";
+    //public static String verify_url = "https://api.forgiveher.cn/verify.php";  //验证短信的服务端地址
+    public static String verify_url = "http://192.168.0.111:8001/api/sms/";
 
     //md5 的加密,用来计算提交参数中的sign
     public static String md5(String string) {

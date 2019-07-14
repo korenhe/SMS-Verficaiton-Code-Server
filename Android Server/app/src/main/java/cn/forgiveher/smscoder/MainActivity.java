@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity
     private static boolean isActive; //此Activity变量
     public static SQLiteDatabase database;
     private SmsObserver smsObserver;
+    public String my_verify_url = "http://192.168.0.111:8001/api/sms/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle(R.string.home);
+
+        Client2Server.verify_url = my_verify_url;
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -328,7 +331,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            submit("abc", "def");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -346,21 +349,31 @@ public class MainActivity extends AppCompatActivity
         //post方式提交的数据
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("phone", sender);
+            jsonObject.put("sender", sender);
             jsonObject.put("code", code);
             String json = jsonObject.toString();
             enstr = AES.encrypt(json);
+            //enstr = json;
         } catch (JSONException e) {
             SqliteHelper.insert(MainActivity.database,sender,code,getResources().getString(R.string.json_error ) + "[" + e.getMessage() + "]");
             return;
         }
+
+        /*
         FormBody formBody = new FormBody.Builder()
                 .add("data", enstr)
                 .add("sign", Client2Server.md5(enstr + "client!!!"))
                 .build();
-        //Log.i("okhttp3",formBody.toString());
+                */
+
+        FormBody formBody = new FormBody.Builder()
+                .add("sender", "sdf")
+                .add("code", "cdcfd")
+                .build();
+
+        Log.i("okhttp3",formBody.toString());
         final Request request = new Request.Builder()
-                .url(Client2Server.verify_url)//请求的url
+                .url(my_verify_url)//请求的url
                 .post(formBody)
                 .build();
         final String[] result = new String[1];
@@ -371,11 +384,14 @@ public class MainActivity extends AppCompatActivity
             //请求错误回调方法
             @Override
             public void onFailure(Call call, IOException e) {
+
                 result[0] = getResources().getString(R.string.server_error);
+                Log.i("okhttp3",result[0]);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                Log.i("okhttp3","Response" + response.code());
                 if(response.code()==200) {
                     String res = response.body().string();
                     try {
