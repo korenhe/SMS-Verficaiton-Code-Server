@@ -367,8 +367,8 @@ public class MainActivity extends AppCompatActivity
                 */
 
         FormBody formBody = new FormBody.Builder()
-                .add("sender", "sdf")
-                .add("code", "cdcfd")
+                .add("sender", sender)
+                .add("code", code)
                 .build();
 
         Log.i("okhttp3",formBody.toString());
