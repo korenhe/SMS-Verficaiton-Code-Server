@@ -32,7 +32,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -167,6 +169,32 @@ public class MainActivity extends AppCompatActivity
                 Uri uri = Uri.parse("http://github.com/dirname");
                 Intent it = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(it);
+            }
+        });
+
+        // url
+        TextView url = findViewById(R.id.textView_url);
+        url.setText(my_verify_url);
+
+        Button button_url = findViewById(R.id.button_url);
+        button_url.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText ip1 = findViewById(R.id.editText_ip1);
+                EditText ip2 = findViewById(R.id.editText_ip2);
+                EditText ip3 = findViewById(R.id.editText_ip3);
+                EditText ip4 = findViewById(R.id.editText_ip4);
+                EditText port = findViewById(R.id.editText_port);
+
+                my_verify_url = "http://" +
+                                ip1.getText() + "." +
+                                ip2.getText() + "." +
+                                ip3.getText() + "." +
+                                ip4.getText() + ":" +
+                                port.getText() + "/api/sms/";
+                TextView url = findViewById(R.id.textView_url);
+                url.setText(my_verify_url);
+                Client2Server.verify_url = my_verify_url;
             }
         });
     }
