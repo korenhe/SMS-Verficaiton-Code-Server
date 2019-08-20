@@ -33,6 +33,11 @@
             android:screenOrientation="portrait"
             android:label="@string/log">
         </activity>
+        <activity
+            android:name=".HostListActivity"
+            android:screenOrientation="portrait"
+            android:label="Servers">
+        </activity>
     </application>
 
 </manifest>

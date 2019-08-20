@@ -39,13 +39,16 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.litepal.LitePal;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import cn.forgiveher.model.Host;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -66,6 +69,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Database
+        /*
+        LitePal.initialize(this);
+
+
+        Host myhost = new Host();
+        myhost.setName("test1");
+        myhost.setIP("127.0.0.1");
+        myhost.save();
+
+        List<Host> allhosts = LitePal.findAll(Host.class);
+*/
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -354,8 +371,11 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
             this.overridePendingTransition(0, 0);
             finish();
-        } else if (id == R.id.nav_slideshow) {
-
+        } else if (id == R.id.nav_server) {
+            Intent intent = new Intent(this, HostListActivity.class);
+            startActivity(intent);
+            this.overridePendingTransition(0, 0);
+            finish();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
