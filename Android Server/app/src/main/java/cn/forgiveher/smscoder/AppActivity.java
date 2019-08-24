@@ -19,19 +19,6 @@ import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 public class AppActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,SmsResponseCallback {
 
@@ -124,7 +111,6 @@ public class AppActivity extends AppCompatActivity
     @Override
     public void onCallbackSmsContent(String address, String smsContent) {
         NotificationHelper.NewSmsNotification(this,smsContent);
-        submit(address,smsContent);
         //LoadLog(); //位于该activity，刷新日志
     }
 
@@ -186,62 +172,6 @@ public class AppActivity extends AppCompatActivity
         counts.setText(getResources().getString(R.string.logs) + String.valueOf(logcounts) + getResources().getString(R.string.strip));
         scrollView.fullScroll(ScrollView.FOCUS_DOWN);
         //scrollView.scrollTo(0,logview.getMeasuredHeight() - scrollView.getHeight());
-    }
-
-    private void submit(final String sender, final String code){
-        String enstr;
-        OkHttpClient okHttpClient  = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10,TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .build();
-        //post方式提交的数据
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("phone", sender);
-            jsonObject.put("code", code);
-            String json = jsonObject.toString();
-            enstr = AES.encrypt(json);
-        } catch (JSONException e) {
-            SqliteHelper.insert(MainActivity.database,sender,code,getResources().getString(R.string.json_error ) + "[" + e.getMessage() + "]");
-            return;
-        }
-        FormBody formBody = new FormBody.Builder()
-                .add("data", enstr)
-                .add("sign", Client2Server.md5(enstr + "client!!!"))
-                .build();
-        final Request request = new Request.Builder()
-                .url(Client2Server.verify_url)//请求的url
-                .post(formBody)
-                .build();
-        final String[] result = new String[1];
-        //创建/Call
-        Call call = okHttpClient.newCall(request);
-        //加入队列 异步操作
-        
-        call.enqueue(new Callback() {
-            //请求错误回调方法
-            @Override
-            public void onFailure(Call call, IOException e) {
-                result[0] = getResources().getString(R.string.server_error);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if(response.code()==200) {
-                    String res = response.body().string();
-                    try {
-                        JSONObject jsonObject = new JSONObject(res);
-                        String message = jsonObject.getString("message");
-                        result[0] = message;
-                    } catch (JSONException e) {
-                        result[0] = e.getMessage();
-                    }
-                }
-                SqliteHelper.insert(MainActivity.database,sender,code,result[0]);
-                handler.sendEmptyMessage(0x123);
-            }
-        });
     }
 
     Handler handler = new Handler()

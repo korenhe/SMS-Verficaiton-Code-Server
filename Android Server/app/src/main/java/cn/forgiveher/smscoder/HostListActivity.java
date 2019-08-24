@@ -1,18 +1,27 @@
 package cn.forgiveher.smscoder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.widget.Toast;
+
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.forgiveher.model.Host;
 
-public class HostListActivity extends AppCompatActivity {
+
+public class HostListActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
     private List<Host> list = new ArrayList<>();
     private Context context;
     private RecyclerView recyclerView;
@@ -22,18 +31,6 @@ public class HostListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
 
-        // Database
-        /*
-        LitePal.initialize(this);
-
-
-        Host myhost = new Host();
-        myhost.setName("test1");
-        myhost.setIP("127.0.0.1");
-        myhost.save();
-
-        List<Host> allhosts = LitePal.findAll(Host.class);
-        */
         context = this;
 
         initData();
@@ -52,14 +49,44 @@ public class HostListActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_main) {
+            // Handle the camera action
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+            this.overridePendingTransition(0, 0);
+            finish();
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
     private void initData() {
-        list.clear();
-        for (int i = 50; i < 100; i++) {
+
+
+        // Database
+        LitePal.initialize(this);
+
+        /*
+        for (int i = 0; i < 5; i++) {
             Host host = new Host();
             host.setName("host" + i);
-            host.setIP(Integer.toString(i));
-            list.add(host);
+            host.setIP("127.0.0." + i);
+            host.save();
         }
+*/
+        list = LitePal.findAll(Host.class);
+
     }
 
 

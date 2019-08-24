@@ -30,11 +30,10 @@
 
             <EditText
                 android:id="@+id/editText_ip1"
-                android:layout_width="40dp"
+                android:layout_width="272dp"
                 android:layout_height="40dp"
                 android:ems="10"
-                android:inputType="numberDecimal"
-                android:text="192"
+                android:inputType="textUri"
                 tools:layout_editor_absoluteX="42dp"
                 tools:layout_editor_absoluteY="399dp" />
 
@@ -47,74 +46,6 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/editText_ip1"
                 tools:layout_editor_absoluteY="406dp" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="."
-                app:layout_constraintEnd_toStartOf="@+id/editText_ip3"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/editText_ip2"
-                tools:layout_editor_absoluteY="406dp" />
-
-            <EditText
-                android:id="@+id/editText_ip2"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:ems="10"
-                android:inputType="numberDecimal"
-                android:text="168"
-                tools:layout_editor_absoluteX="78dp"
-                tools:layout_editor_absoluteY="399dp" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="."
-                app:layout_constraintEnd_toStartOf="@+id/editText_port"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/editText_ip3"
-                tools:layout_editor_absoluteY="406dp" />
-
-            <EditText
-                android:id="@+id/editText_ip3"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:ems="10"
-                android:inputType="numberDecimal"
-                android:text="0"
-                tools:layout_editor_absoluteX="118dp"
-                tools:layout_editor_absoluteY="399dp" />
-
-            <EditText
-                android:id="@+id/editText_ip4"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:ems="10"
-                android:inputType="numberDecimal"
-                android:text="111"
-                tools:layout_editor_absoluteX="162dp"
-                tools:layout_editor_absoluteY="399dp" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="\:"
-                tools:layout_editor_absoluteX="203dp"
-                tools:layout_editor_absoluteY="406dp" />
-
-            <EditText
-                android:id="@+id/editText_port"
-                android:layout_width="54dp"
-                android:layout_height="40dp"
-                android:ems="10"
-                android:inputType="numberDecimal"
-                android:text="8001"
-                tools:layout_editor_absoluteX="206dp"
-                tools:layout_editor_absoluteY="399dp" />
 
         </LinearLayout>
 

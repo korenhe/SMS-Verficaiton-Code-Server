@@ -13,8 +13,9 @@ public class Host extends LitePalSupport {
         return ip;
     }
 
-    @Column(unique = true, defaultValue = "unknown")
+    @Column(defaultValue = "unknown")
     private String name;
+    @Column(unique = true, defaultValue = "unknown")
     private String ip;
 
     public void setName(String name) {

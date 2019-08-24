@@ -13,7 +13,7 @@ public class SmsObserver extends BroadcastReceiver {
 
     private Context mContext;
     public static final int MSG_RECEIVED_CODE = 1001;
-    private SmsHandler mHandler;
+    public SmsHandler mHandler;
 
     /***
      * 构造器

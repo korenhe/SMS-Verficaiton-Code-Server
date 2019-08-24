@@ -23,7 +23,7 @@
 
 
    	<list>
-   		<mapping class="cn.forgiveher.smscoder.model.Host" />
+   		<mapping class="cn.forgiveher.model.Host" />
    	</list>
 
     <list>

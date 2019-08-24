@@ -64,31 +64,14 @@ public class MainActivity extends AppCompatActivity
     private static boolean isActive; //此Activity变量
     public static SQLiteDatabase database;
     private SmsObserver smsObserver;
-    public String my_verify_url = "http://192.168.0.111:8001/api/sms/";
+
+    public String my_verify_url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Database
-        /*
-        LitePal.initialize(this);
-
-
-        Host myhost = new Host();
-        myhost.setName("test1");
-        myhost.setIP("127.0.0.1");
-        myhost.save();
-
-        List<Host> allhosts = LitePal.findAll(Host.class);
-*/
-
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        setTitle(R.string.home);
 
-        Client2Server.verify_url = my_verify_url;
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +89,10 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setTitle(R.string.home);
 
         //Navigation 的初始化
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -157,6 +144,19 @@ public class MainActivity extends AppCompatActivity
         smsObserver = new SmsObserver(this, this, null);
         registerReceiver(smsObserver, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
 
+        smsObserver.mHandler.initData(this);
+
+        //smsObserver.mHandler.verify_url
+        my_verify_url = smsObserver.mHandler.getVerify_url();
+
+
+        /* set default textview */
+        final EditText ip = findViewById(R.id.editText_ip1);
+
+        ip.setText(smsObserver.mHandler.getVerify_url());
+
+
+
         //开源协议初始化
         TextView license = findViewById(R.id.textView5);
         license.setOnClickListener(new View.OnClickListener() {
@@ -197,21 +197,16 @@ public class MainActivity extends AppCompatActivity
         button_url.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText ip1 = findViewById(R.id.editText_ip1);
-                EditText ip2 = findViewById(R.id.editText_ip2);
-                EditText ip3 = findViewById(R.id.editText_ip3);
-                EditText ip4 = findViewById(R.id.editText_ip4);
-                EditText port = findViewById(R.id.editText_port);
 
-                my_verify_url = "http://" +
-                                ip1.getText() + "." +
-                                ip2.getText() + "." +
-                                ip3.getText() + "." +
-                                ip4.getText() + ":" +
-                                port.getText() + "/api/sms/";
+                my_verify_url = ip.getText().toString();
                 TextView url = findViewById(R.id.textView_url);
                 url.setText(my_verify_url);
-                Client2Server.verify_url = my_verify_url;
+
+                try {
+                    smsObserver.mHandler.setVerify_url(my_verify_url);
+                } catch(org.litepal.exceptions.LitePalSupportException e) {
+                    Toast.makeText(MainActivity.this, "DB UNIQUE FAILED", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -219,7 +214,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCallbackSmsContent(String sender,String code) {
         NotificationHelper.NewSmsNotification(this,code);
-        submit(sender,code);
+
+        smsObserver.mHandler.submit(sender, code);
         Log.i("smscontent", sender + ":" + code);
     }
 
@@ -379,7 +375,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-            submit("abc", "def");
+
+            smsObserver.mHandler.submit("abc", "def");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -387,71 +384,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void submit(final String sender, final String code){
-        String enstr;
-        OkHttpClient okHttpClient  = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10,TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .build();
-        //post方式提交的数据
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("sender", sender);
-            jsonObject.put("code", code);
-            String json = jsonObject.toString();
-            enstr = AES.encrypt(json);
-            //enstr = json;
-        } catch (JSONException e) {
-            SqliteHelper.insert(MainActivity.database,sender,code,getResources().getString(R.string.json_error ) + "[" + e.getMessage() + "]");
-            return;
-        }
-
-        /*
-        FormBody formBody = new FormBody.Builder()
-                .add("data", enstr)
-                .add("sign", Client2Server.md5(enstr + "client!!!"))
-                .build();
-                */
-
-        FormBody formBody = new FormBody.Builder()
-                .add("sender", sender)
-                .add("code", code)
-                .build();
-
-        Log.i("okhttp3",formBody.toString());
-        final Request request = new Request.Builder()
-                .url(my_verify_url)//请求的url
-                .post(formBody)
-                .build();
-        final String[] result = new String[1];
-        //创建/Call
-        Call call = okHttpClient.newCall(request);
-        //加入队列 异步操作
-        call.enqueue(new Callback() {
-            //请求错误回调方法
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-                result[0] = getResources().getString(R.string.server_error);
-                Log.i("okhttp3",result[0]);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.i("okhttp3","Response" + response.code());
-                if(response.code()==200) {
-                    String res = response.body().string();
-                    try {
-                        JSONObject jsonObject = new JSONObject(res);
-                        String message = jsonObject.getString("message");
-                        result[0] = message;
-                    } catch (JSONException e) {
-                        result[0] = e.getMessage();
-                    }
-                }
-                SqliteHelper.insert(MainActivity.database,sender,code,result[0]);
-            }
-        });
-    }
 }
