@@ -6,8 +6,8 @@
     <string name="server">サーバ</string>
     <string name="choice_mail_app">メールのアプリケーションを選択してください</string>
     <string name="nav_header_subtitle">エキサイティングなメール検証システム</string>
-    <string name="ah">SMS コーダー\n\n - エキサイティングなメール検証システム - \n\nAh ! 作品\n</string>
-    <string name="nav_header_title">SMS コーダー - Ah ! 作品</string>
+    <string name="koren">SMS コーダー\n\n - エキサイティングなメール検証システム - \n\nKoren ! 作品\n</string>
+    <string name="nav_header_title">SMS コーダー - Koren ! 作品</string>
     <string name="license"><u>開源協議</u></string>
     <string name="yes">確定</string>
     <string name="clear_log">清空日誌</string>

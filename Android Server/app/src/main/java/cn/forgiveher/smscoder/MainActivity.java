@@ -178,17 +178,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        //github
-        TextView github = findViewById(R.id.textView6);
-        github.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri uri = Uri.parse("http://github.com/dirname");
-                Intent it = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(it);
-            }
-        });
-
         // url
         TextView url = findViewById(R.id.textView_url);
         url.setText(my_verify_url);

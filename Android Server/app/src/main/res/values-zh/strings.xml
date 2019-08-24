@@ -5,8 +5,8 @@
     <string name="home">主页</string>
     <string name="server">服务器</string>
     <string name="nav_header_subtitle">服务端被动式短信验证系统</string>
-    <string name="ah">SMS Coder\n\n - 服务端被动式短信验证系统 - \n\nAh ! 作品\n</string>
-    <string name="nav_header_title">SMS Coder - Ah ! 作品</string>
+    <string name="koren">SMS Coder\n\n - 服务端被动式短信验证系统 - \n\nKoren ! 作品\n</string>
+    <string name="nav_header_title">SMS Coder - Koren ! 作品</string>
     <string name="license"><u>开源协议</u></string>
     <string name="yes">确定</string>
     <string name="clear_log">清空日志</string>

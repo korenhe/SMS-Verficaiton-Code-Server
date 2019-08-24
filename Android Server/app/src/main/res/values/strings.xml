@@ -2,14 +2,14 @@
     <string name="app_name">SMS Verification Code Server</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">SMS Coder - The Product Of Ah !</string>
+    <string name="nav_header_title">SMS Coder - The Product Of Koren !</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="choice_mail_app">Please select Mail class applications</string>
     <string name="home">Home</string>
     <string name="log">Logs</string>
     <string name="server">Server</string>
-    <string name="ah">SMS Coder\n\n - SMS Verification Code Server - \n\nThe Product Of Ah !\n</string>
+    <string name="koren">SMS Coder\n\n - SMS Verification Code Server - \n\nThe Product Of Koren !\n</string>
     <string name="nav_header_subtitle">Server passive SMS verification system</string>
     <string name="license"><u>Opeen source licenses</u></string>
     <string name="github"><u>GitHub @dirname</u></string>

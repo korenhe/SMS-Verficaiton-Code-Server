@@ -110,6 +110,7 @@ public class SmsHandler extends Handler {
                     smsInfos[1] = matcher.replaceAll("");
                 }
                 Log.i(getClass().getName(),smsInfos[0]+smsInfos[1]);
+                Log.i("smscontent", "handlemessage in sms handler");
                 mCallback.onCallbackSmsContent(smsInfos[0], smsInfos[1]);
             }
         }
